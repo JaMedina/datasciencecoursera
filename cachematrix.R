@@ -1,35 +1,53 @@
-##The function makeCacheMatrix creates a custom mattrix object.
-##The function cacheSolve calculates the inverse of a matrix.
-##If the invere of the matrix was calculted before it will return
-##the cached valuo without calculating it again.
+## Put comments here that give an overall description of what your
+## functions do
 
-makeCacheMatrix <- function(x = matrix()) {
-   inv_x <- NULL
-    set <- function(y) {
-        x <<- y
-        xInv <<- NULL
-    }
-    get <- function() x
-    setinverse<- function(inverse) xInv <<-inverse
-    getinverse <- function() xInv
-    list(set = set, get = get,
-         setinverse = setinverse,
-         getinverse = getinverse)
+## Write a short comment describing this function
+
+## The function makeCacheMatrix converts a matrix into  a special type of matrix
+# in which it is possible to store the inverse of the original matrix
+# as well as return the value of both the original and the inverse matrix
+
+makeCacheMatrix <- function(x = matrix()){
+   x_inverse   <- NULL;
+
+   set         <- function(y){
+      x           <<- y;
+      x_inverse   <<- NULL;
+   }
+   get         <- function(){
+      x;
+   }
+   setinverse  <- function(inverse){
+      x_inverse   <<- inverse;
+   }
+   getinverse  <- function(){
+      x_inverse;
+   }
+
+   list(
+      set         = set,
+      get         = get,
+      setinverse  = setinverse,
+      getinverse  = getinverse
+   )
 }
 
-##The function cacheSolve returns the inverse of a matrix
-##created with the makeCacheMatrix function.
-##If the cached inverse is not empty the function will return
-##the cached value. If it is not available, the function
-##will compute the value, store it in the cache and the return it.
+## Write a short comment describing this function
 
-cacheSolve <- function(x, ...) {
-    if (!is.null(xInv)) {
-        message("Retrieve cached inverse matrix")
-        return(xInv)
-    } else {
-        xInv <- solve(x$get())
-        x$setinverse(xInv)
-        return(xInv)
-    }
+## The function cacheSolve receives a makeCacheMatrix argument. This function
+# will compute the inverse of a matrix if the inverse of the argument is null
+# or it will return the chached valuo of the argument.
+
+cacheSolve  <- function(x, ...){
+   ## Return a matrix that is the inverse of 'x'
+   x_inverse <- x$getinverse();
+   if(is.null(x_inverse)){
+      print("Calculating inverse of matrix.");
+      x_inverse <- solve(x$get());
+      x$setinverse(x_inverse);
+   }else{
+      print("Cached matrix found.");
+   }
+
+   return (x_inverse);
 }
